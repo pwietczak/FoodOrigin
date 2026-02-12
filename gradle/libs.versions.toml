@@ -19,6 +19,10 @@ cameraCore = "1.5.3"
 camerax = "1.5.3"
 #permissions
 accompanistPermissions = "0.37.3"
+#nav
+compose-navigation = "2.9.7"
+#Icons
+compose-material-icons-extended = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,10 +62,15 @@ camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
 #For the permission
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+#Nav
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
+#Icons
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material-icons-extended" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [bundles]
 koin = [

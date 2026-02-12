@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Food Origin</string>
+
+    <string name="product_code_input_screen_button_search_text">Search</string>
+    <string name="product_code_input_screen_button_scan_code_content_desc">Scan Code</string>
+    <string name="product_code_input_screen_text_field_label">Enter product barcode</string>
+    <string name="product_code_input_screen_description_text">Enter product barcode, or scan it using camera</string>
+
+    <string name="onboarding_screen_button_grant_permission">Grant Permission</string>
+    <string name="onboarding_screen_text_show_rationale">The Camera permission is important for this app.\nPlease grant permission.</string>
+    <string name="onboarding_screen_text_please_grant_permission">This app requires camera access for barcode scanning.\nPlease grant permission</string>
+    <string name="show_rationale_dialog_title">Permission</string>
+    <string name="show_rationale_dialog_text">Permission needed:\n%1$s</string>
+    <string name="show_rationale_dialog_button_confirm">Grand Permission</string>
+    <string name="show_rationale_dialog_button_cancel">Cancel</string>
 </resources>

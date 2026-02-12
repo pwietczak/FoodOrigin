@@ -7,7 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import eu.pw.foodorigin.presentation.HomeScreen
+import androidx.navigation.compose.rememberNavController
+import eu.pw.foodorigin.presentation.navigation.AppNavHost
 import eu.pw.foodorigin.ui.theme.FoodOriginTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,72 +18,13 @@ class MainActivity : ComponentActivity() {
 		setContent {
 			FoodOriginTheme {
 				Scaffold { innerPadding ->
-					HomeScreen(modifier = Modifier.padding(innerPadding))
-//					ScanProductScreen(
-//						modifier = Modifier.padding(innerPadding),
-//						viewModel = koinViewModel<ScanProductViewModel>()
-//							  )
+					val navHostController = rememberNavController()
+					AppNavHost(
+						modifier = Modifier.padding(innerPadding),
+						navHostController = navHostController,
+					          )
 				}
-			//FoodOriginApp()
 			}
 		}
 	}
-} //
-//@PreviewScreenSizes
-//@Composable
-//fun FoodOriginApp() {
-//	var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
-//
-//	NavigationSuiteScaffold(
-//		navigationSuiteItems = {
-//			AppDestinations.entries.forEach {
-//				item(
-//					icon = {
-//						Icon(
-//							it.icon,
-//							contentDescription = it.label
-//						    )
-//					},
-//					label = { Text(it.label) },
-//					selected = it == currentDestination,
-//					onClick = { currentDestination = it }
-//				    )
-//			}
-//		}
-//	                       ) {
-//		Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//			Greeting(
-//				name = "Android",
-//				modifier = Modifier.padding(innerPadding)
-//			        )
-//		}
-//	}
-//}
-//
-//enum class AppDestinations(
-//	val label: String,
-//	val icon: ImageVector,
-//                          ) {
-//	HOME("Home", Icons.Default.Home),
-//	FAVORITES("Favorites", Icons.Default.Favorite),
-//	PROFILE("Profile", Icons.Default.AccountBox),
-//}
-//
-//@Composable
-//fun Greeting(
-//	name: String,
-//	modifier: Modifier = Modifier
-//            ) {
-//	Text(
-//		text = "Hello $name!",
-//		modifier = modifier
-//	    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//	FoodOriginTheme {
-//		Greeting("Android")
-//	}
-//}
+}
