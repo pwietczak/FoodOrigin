@@ -21,8 +21,13 @@ android {
 	}
 
 	buildTypes {
-		release {
+		debug {
 			isMinifyEnabled = false
+			buildConfigField("String", "BASE_OPEN_FOOD_FACTS_API_URL", "\"https://world.openfoodfacts.org/api/v2/\"")
+		}
+		release {
+			isMinifyEnabled = true
+			buildConfigField("String", "BASE_OPEN_FOOD_FACTS_API_URL", "\"https://world.openfoodfacts.org/api/v2/\"")
 			proguardFiles(
 				getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
 			             )

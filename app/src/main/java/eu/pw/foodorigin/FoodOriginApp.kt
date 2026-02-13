@@ -1,6 +1,7 @@
 package eu.pw.foodorigin
 
 import android.app.Application
+import eu.pw.foodorigin.di.dataModule
 import eu.pw.foodorigin.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -18,6 +19,7 @@ class FoodOriginApp: Application() {
 			androidContext(this@FoodOriginApp)
 			modules(listOf(
 				viewModelModule,
+				dataModule
 						  ))
 		}
 
