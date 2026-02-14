@@ -9,7 +9,6 @@ data class ProductUi(
 			val brandsTags: List<String>?
 					)
 
-
 fun Product.toProductUi()=
 		ProductUi(
 			id = id,
@@ -17,9 +16,3 @@ fun Product.toProductUi()=
 			brand = brands,
 			brandsTags = brandsTags
 					   )
-
-
-
-
-
-

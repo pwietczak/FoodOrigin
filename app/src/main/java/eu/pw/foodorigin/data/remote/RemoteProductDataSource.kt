@@ -1,9 +1,9 @@
 package eu.pw.foodorigin.data.remote
 
-import eu.pw.foodorigin.data.constructUrl
+import eu.pw.foodorigin.data.remote.util.constructUrl
 import eu.pw.foodorigin.data.dataSource.ProductDataSource
 import eu.pw.foodorigin.data.remote.dto.ProductResultDto
-import eu.pw.foodorigin.data.safeCall
+import eu.pw.foodorigin.data.remote.util.safeCall
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import kotlinx.coroutines.Dispatchers
@@ -21,5 +21,4 @@ class RemoteProductDataSource(
 			}
 			emit(result)
 		}.flowOn(Dispatchers.IO)
-
 }

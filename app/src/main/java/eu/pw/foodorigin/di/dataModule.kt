@@ -1,7 +1,8 @@
 package eu.pw.foodorigin.di
 
-import eu.pw.foodorigin.data.HttpClientFactory
+import eu.pw.foodorigin.data.remote.util.HttpClientFactory
 import eu.pw.foodorigin.data.dataSource.ProductDataSource
+import eu.pw.foodorigin.data.mapper.ProductResultDtoMapper
 import eu.pw.foodorigin.data.remote.RemoteProductDataSource
 import eu.pw.foodorigin.data.repository.ProductRepositoryImpl
 import eu.pw.foodorigin.domain.repository.ProductRepository
@@ -14,4 +15,5 @@ val dataModule = module {
 	single { HttpClientFactory.create(CIO.create()) }
 	singleOf( ::RemoteProductDataSource).bind<ProductDataSource>()
 	singleOf(::ProductRepositoryImpl).bind<ProductRepository>()
+	single{ ProductResultDtoMapper() }
 }

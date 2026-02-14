@@ -5,5 +5,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductDataSource {
 	fun getProduct(code: String): Flow<Result<ProductResultDto>>
-
 }

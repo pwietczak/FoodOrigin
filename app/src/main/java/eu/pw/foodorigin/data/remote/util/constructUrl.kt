@@ -1,4 +1,4 @@
-package eu.pw.foodorigin.data
+package eu.pw.foodorigin.data.remote.util
 
 import eu.pw.foodorigin.BuildConfig
 

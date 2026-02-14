@@ -74,10 +74,8 @@ fun ProductDetailsScreenContent(
 					    )
 				}
 			}
-
 		}
 	}
-
 }
 
 @PreviewLightDark

@@ -25,9 +25,7 @@ class ProductDetailsViewModel(
 
 	init {
 		_uiState.update {
-			it.copy(
-				isLoading = true,
-			       )
+			it.copy(isLoading = true,)
 		}
 
 		viewModelScope.launch {
@@ -53,5 +51,4 @@ class ProductDetailsViewModel(
 			}
 		}
 	}
-
 }
