@@ -18,7 +18,5 @@
     <string name="exception_request_quota_exceeded">Request quota exceeded"</string>
     <string name="exception_something_went_wrong">Something went wrong</string>
     <string name="exception_unknown_error">Unknown error</string>
-
-    <string name="exception_product_repository_porduct_not_found">Product name:</string>
-
+    <string name="exception_product_repository_product_not_found">Product not found</string>
 </resources>
