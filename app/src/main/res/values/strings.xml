@@ -13,4 +13,10 @@
     <string name="show_rationale_dialog_text">Permission needed:\n%1$s</string>
     <string name="show_rationale_dialog_button_confirm">Grand Permission</string>
     <string name="show_rationale_dialog_button_cancel">Cancel</string>
+
+    <string name="exception_request_timed_out">The request timed out</string>
+    <string name="exception_request_quota_exceeded">Request quota exceeded"</string>
+    <string name="exception_something_went_wrong">Something went wrong</string>
+    <string name="exception_unknown_error">Unknown error</string>
+    <string name="exception_product_repository_product_not_found">Product not found</string>
 </resources>

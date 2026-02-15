@@ -6,9 +6,7 @@ plugins {
 
 android {
 	namespace = "eu.pw.foodorigin"
-	compileSdk {
-		version = release(36)
-	}
+	compileSdk = 36
 
 	defaultConfig {
 		applicationId = "eu.pw.foodorigin"
@@ -21,8 +19,13 @@ android {
 	}
 
 	buildTypes {
-		release {
+		debug {
 			isMinifyEnabled = false
+			buildConfigField("String", "BASE_OPEN_FOOD_FACTS_API_URL", "\"https://world.openfoodfacts.org/api/v2/\"")
+		}
+		release {
+			isMinifyEnabled = true
+			buildConfigField("String", "BASE_OPEN_FOOD_FACTS_API_URL", "\"https://world.openfoodfacts.org/api/v2/\"")
 			proguardFiles(
 				getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
 			             )
@@ -43,11 +46,8 @@ dependencies {
 	implementation(libs.androidx.lifecycle.runtime.ktx)
 	implementation(libs.androidx.activity.compose)
 	implementation(platform(libs.androidx.compose.bom))
-	implementation(libs.androidx.compose.ui)
-	implementation(libs.androidx.compose.ui.graphics)
-	implementation(libs.androidx.compose.ui.tooling.preview)
-	implementation(libs.androidx.compose.material3)
-	implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
+	implementation(libs.bundles.compose)
+	implementation(libs.androidx.navigation.compose)
 
 	implementation(libs.timber)
 	implementation(libs.bundles.koin)
@@ -55,10 +55,8 @@ dependencies {
 	implementation(libs.bundles.barcodeScanning)
 	implementation(libs.bundles.cameraX)
 	implementation(libs.accompanist.permissions)
-	implementation(libs.androidx.navigation.compose)
-	implementation(libs.androidx.compose.material.icons.extended)
 
-	testImplementation(libs.junit)
+	testImplementation(libs.bundles.unitTests)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
 	androidTestImplementation(platform(libs.androidx.compose.bom))
