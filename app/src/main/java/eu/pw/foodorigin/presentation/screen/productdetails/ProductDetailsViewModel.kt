@@ -4,11 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import eu.pw.foodorigin.domain.repository.BigBrandRepository
+import eu.pw.foodorigin.domain.repository.ProductRepository
+import eu.pw.foodorigin.domain.useCase.GetRelatedBigBrand
 import eu.pw.foodorigin.presentation.navigation.ProductDestination
 import eu.pw.foodorigin.presentation.screen.productdetails.model.toProductUi
-import eu.pw.foodorigin.domain.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -16,6 +20,8 @@ import timber.log.Timber
 class ProductDetailsViewModel(
 	savedStateHandle: SavedStateHandle,
 	productRepository: ProductRepository,
+	bigBrandRepository: BigBrandRepository,
+	getRelatedBigBrand: GetRelatedBigBrand,
                              ) : ViewModel() {
 
 	private val productCode: String =
@@ -25,30 +31,38 @@ class ProductDetailsViewModel(
 
 	init {
 		_uiState.update {
-			it.copy(isLoading = true,)
+			it.copy(isLoading = true)
 		}
 
 		viewModelScope.launch {
-			productRepository.getProduct(productCode).collect { result ->
-				Timber.d("Product result: $result")
-				result.onSuccess { dto ->
+			val productFlow = productRepository.getProduct(productCode)
+			val bigBrandsFlow = bigBrandRepository.getBigBrands()
+
+			combine(productFlow, bigBrandsFlow) { productResult, bigBrandsResult ->
+				if (productResult.isSuccess && bigBrandsResult.isSuccess) {
+					val product = productResult.getOrThrow()
+					val bigBrands = bigBrandsResult.getOrThrow()
+
+					Timber.d("Product: $product")
+					Timber.d("BigBrands: $bigBrands")
+
+					val relatedBigBrandName = getRelatedBigBrand(product, bigBrands)?.nameUI
 					_uiState.update {
 						it.copy(
-							productDto = dto.toProductUi(),
+							productDto = product.toProductUi(),
 							productCode = productCode,
 							isLoading = false,
+							relatedBigBrandName = relatedBigBrandName,
 						       )
 					}
 				}
-				result.onFailure {
-					_uiState.update {
-						it.copy(
-							isLoading = false,
-							productCode = productCode,
-						       )
-					}
+				else _uiState.update {
+					it.copy(
+						isLoading = false,
+						productCode = productCode,
+					       )
 				}
-			}
+			}.collect()
 		}
 	}
 }

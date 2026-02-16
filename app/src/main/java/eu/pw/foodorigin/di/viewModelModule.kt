@@ -7,5 +7,10 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 	viewModel { ProductCodeInputViewModel() }
-	viewModel { ProductDetailsViewModel(get(),get()) }
+	viewModel { ProductDetailsViewModel(
+		savedStateHandle = get(),
+		productRepository = get(),
+		bigBrandRepository = get(),
+		getRelatedBigBrand = get()
+	                                   ) }
 }

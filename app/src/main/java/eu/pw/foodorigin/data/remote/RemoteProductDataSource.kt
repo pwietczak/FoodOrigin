@@ -1,8 +1,8 @@
 package eu.pw.foodorigin.data.remote
 
-import eu.pw.foodorigin.data.remote.util.constructUrl
 import eu.pw.foodorigin.data.dataSource.ProductDataSource
 import eu.pw.foodorigin.data.remote.dto.ProductResultDto
+import eu.pw.foodorigin.data.remote.util.constructUrl
 import eu.pw.foodorigin.data.remote.util.safeCall
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
