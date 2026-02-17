@@ -1,6 +1,7 @@
 package eu.pw.foodorigin.presentation.screen.productdetails.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,7 +13,7 @@ import eu.pw.foodorigin.ui.theme.FoodOriginTheme
 
 @Composable
 fun ProductDetailItem(
-	modifier: Modifier,
+	modifier: Modifier = Modifier.fillMaxWidth(),
 	label: String,
 	value: String?,
                      ) {
