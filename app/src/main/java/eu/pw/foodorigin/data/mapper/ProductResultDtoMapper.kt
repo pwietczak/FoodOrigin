@@ -9,6 +9,9 @@ class ProductResultDtoMapper {
 		code = productResultDto.code,
 		productName = productResultDto.product?.productName,
 		brands = productResultDto.product?.brands,
-		brandsTags = productResultDto.product?.brandsTags
+		brandsTags = productResultDto.product?.brandsTags,
+		imageUrl = productResultDto.product?.imageUrl,
+		quantity = productResultDto.product?.quantity,
+		link = productResultDto.product?.link,
 	                                                           )
 }

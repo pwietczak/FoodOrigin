@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -26,14 +25,10 @@ class ProductDetailsViewModel(
 
 	private val productCode: String =
 		savedStateHandle.toRoute<ProductDestination.ProductDetails>().productCode
-	private val _uiState = MutableStateFlow(ProductDetailsUiState())
+	private val _uiState = MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
 	val uiState = _uiState.asStateFlow()
 
 	init {
-		_uiState.update {
-			it.copy(isLoading = true)
-		}
-
 		viewModelScope.launch {
 			val productFlow = productRepository.getProduct(productCode)
 			val bigBrandsFlow = bigBrandRepository.getBigBrands()
@@ -47,20 +42,14 @@ class ProductDetailsViewModel(
 					Timber.d("BigBrands: $bigBrands")
 
 					val relatedBigBrandName = getRelatedBigBrand(product, bigBrands)?.nameUI
-					_uiState.update {
-						it.copy(
-							productDto = product.toProductUi(),
-							productCode = productCode,
-							isLoading = false,
-							relatedBigBrandName = relatedBigBrandName,
-						       )
-					}
-				}
-				else _uiState.update {
-					it.copy(
-						isLoading = false,
+					_uiState.value = ProductDetailsUiState.Success(
+						productUi = product.toProductUi(),
 						productCode = productCode,
-					       )
+						relatedBigBrandName = relatedBigBrandName,
+					                                              )
+				}
+				else {
+					_uiState.value = ProductDetailsUiState.Error(productCode)
 				}
 			}.collect()
 		}
