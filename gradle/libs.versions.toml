@@ -27,6 +27,7 @@ compose-material-icons-extended = "1.7.8"
 mockk = "1.14.9"
 turbine = "1.2.1"
 kotlinx-coroutines-test = "1.10.2"
+slf4jSimple = "2.0.17"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -76,6 +77,7 @@ ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -118,5 +120,6 @@ unitTests = [
     "mockk",
     "turbine",
     "kotlinx-coroutines-test",
-    "ktor-client-mock"
+    "ktor-client-mock",
+    "slf4j-simple"
 ]
