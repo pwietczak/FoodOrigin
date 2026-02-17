@@ -22,7 +22,7 @@ import eu.pw.foodorigin.presentation.screen.productdetails.ProductDetailsUiState
 import eu.pw.foodorigin.presentation.screen.productdetails.model.ProductUi
 
 @Composable
-fun BigBrandInformation(
+fun BigBrandInformation( //TODO add opening side on click
 	modifier: Modifier = Modifier,
 	uiState: ProductDetailsUiState.Success,
                        ) {
