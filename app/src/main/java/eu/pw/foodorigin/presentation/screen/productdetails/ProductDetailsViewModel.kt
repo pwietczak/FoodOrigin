@@ -4,54 +4,70 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import eu.pw.foodorigin.R
+import eu.pw.foodorigin.domain.BigBrand
+import eu.pw.foodorigin.domain.LocalizedException
+import eu.pw.foodorigin.domain.Product
 import eu.pw.foodorigin.domain.repository.BigBrandRepository
 import eu.pw.foodorigin.domain.repository.ProductRepository
 import eu.pw.foodorigin.domain.useCase.GetRelatedBigBrand
 import eu.pw.foodorigin.presentation.navigation.ProductDestination
 import eu.pw.foodorigin.presentation.screen.productdetails.model.toProductUi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 
 class ProductDetailsViewModel(
 	savedStateHandle: SavedStateHandle,
 	productRepository: ProductRepository,
 	bigBrandRepository: BigBrandRepository,
-	getRelatedBigBrand: GetRelatedBigBrand,
+	private val getRelatedBigBrand: GetRelatedBigBrand,
                              ) : ViewModel() {
 
 	private val productCode: String =
 		savedStateHandle.toRoute<ProductDestination.ProductDetails>().productCode
-	private val _uiState = MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
-	val uiState = _uiState.asStateFlow()
+	val uiState: StateFlow<ProductDetailsUiState> = combine(
+		productRepository.getProduct(productCode),
+		bigBrandRepository.getBigBrands(),
+	                                                       ) { productResult, bigBrandsResult ->
+		createUiState(productResult, bigBrandsResult)
+	}.stateIn(
+		scope = viewModelScope,
+		started = SharingStarted.WhileSubscribed(5_000),
+		initialValue = ProductDetailsUiState.Loading,
+	         )
 
-	init {
-		viewModelScope.launch {
-			val productFlow = productRepository.getProduct(productCode)
-			val bigBrandsFlow = bigBrandRepository.getBigBrands()
+	private fun createUiState(
+		productResult: Result<Product>,
+		bigBrandsResult: Result<List<BigBrand>>,
+	                         ): ProductDetailsUiState {
+		return try {
+			val product = productResult.getOrThrow()
+			val bigBrands = bigBrandsResult.getOrThrow()
 
-			combine(productFlow, bigBrandsFlow) { productResult, bigBrandsResult ->
-				if (productResult.isSuccess && bigBrandsResult.isSuccess) {
-					val product = productResult.getOrThrow()
-					val bigBrands = bigBrandsResult.getOrThrow()
+			Timber.d("Product: $product")
+			Timber.d("BigBrands: $bigBrands")
 
-					Timber.d("Product: $product")
-					Timber.d("BigBrands: $bigBrands")
-
-					val relatedBigBrandName = getRelatedBigBrand(product, bigBrands)?.nameUI
-					_uiState.value = ProductDetailsUiState.Success(
-						productUi = product.toProductUi(),
-						productCode = productCode,
-						relatedBigBrandName = relatedBigBrandName,
-					                                              )
-				}
-				else {
-					_uiState.value = ProductDetailsUiState.Error(productCode)
-				}
-			}.collect()
+			// TODO need to thin about what exactly happens here
+			val relatedBigBrandName = getRelatedBigBrand(product, bigBrands)?.nameUI
+			ProductDetailsUiState.Success(
+				productUi = product.toProductUi(),
+				productCode = productCode,
+				relatedBigBrandName = relatedBigBrandName,
+			                             )
+		}
+		catch (
+			le: LocalizedException, ) {
+			Timber.e(le)
+			ProductDetailsUiState.Error(le.messageResId)
+		}
+		catch (
+			e: Exception, ) {
+			Timber.e(e)
+			ProductDetailsUiState.Error(R.string.exception_unknown_error)
 		}
 	}
+
 }

@@ -31,6 +31,7 @@ suspend inline fun <reified T> responseToResult(
 				Result.failure(e)
 			}
 		408 -> Result.failure(LocalizedException(R.string.exception_request_timed_out))
+		404 -> Result.failure(LocalizedException(R.string.exception_product_not_found))
 		429 -> Result.failure(LocalizedException(R.string.exception_request_quota_exceeded))
 		in 500..599 -> Result.failure(LocalizedException(R.string.exception_something_went_wrong))
 		else -> Result.failure(LocalizedException(R.string.exception_unknown_error))

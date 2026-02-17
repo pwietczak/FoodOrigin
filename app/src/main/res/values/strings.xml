@@ -19,4 +19,7 @@
     <string name="exception_something_went_wrong">Something went wrong</string>
     <string name="exception_unknown_error">Unknown error</string>
     <string name="exception_product_repository_product_not_found">Product not found</string>
+    <string name="exception_product_not_found">Product not found</string>
+    <string name="product_details_product_image_content_description">Product image</string>
+    <string name="product_details_barcode_icon_content_description">Barcode</string>
 </resources>

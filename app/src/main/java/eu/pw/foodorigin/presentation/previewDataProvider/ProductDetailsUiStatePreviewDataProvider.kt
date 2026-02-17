@@ -1,13 +1,14 @@
 package eu.pw.foodorigin.presentation.previewDataProvider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import eu.pw.foodorigin.R
 import eu.pw.foodorigin.presentation.screen.productdetails.ProductDetailsUiState
 import eu.pw.foodorigin.presentation.screen.productdetails.model.ProductUi
 
 class ProductDetailsUiStatePreviewDataProvider : PreviewParameterProvider<ProductDetailsUiState> {
 	override val values = sequenceOf(
 		ProductDetailsUiState.Loading,
-		ProductDetailsUiState.Error("Error"),
+		ProductDetailsUiState.Error(R.string.exception_unknown_error),
 		ProductDetailsUiState.Success(
 			productCode = "1234567890",
 			productUi = ProductUi(

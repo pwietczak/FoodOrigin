@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -98,14 +99,15 @@ fun SuccessScreen(
 		   ) {
 			Icon(
 				painter = painterResource(R.drawable.barcode_24dp),
-				contentDescription = null, //TODO add description
+				contentDescription = stringResource(R.string.product_details_barcode_icon_content_description),
 				modifier = Modifier.size(24.dp),
 				tint = MaterialTheme.colorScheme.onBackground,
 			    )
 			DetailRow(
 				modifier = Modifier.weight(1f),
 				label = "",
-				value = uiState.productCode,
+				value = uiState.productCode, // change to productUi code
+
 			         )
 		}
 		ProductImage(
@@ -185,7 +187,7 @@ fun ErrorScreen(
 		contentAlignment = Alignment.Center,
 	   ) {
 		Text(
-			text = uiState.errorMessage,
+			text = stringResource(uiState.errorStringRes),
 			color = MaterialTheme.colorScheme.onBackground,
 		    )
 	}
