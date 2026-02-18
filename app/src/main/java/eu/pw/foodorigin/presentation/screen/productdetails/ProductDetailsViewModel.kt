@@ -13,6 +13,7 @@ import eu.pw.foodorigin.domain.repository.ProductRepository
 import eu.pw.foodorigin.domain.useCase.GetRelatedBigBrand
 import eu.pw.foodorigin.presentation.navigation.ProductDestination
 import eu.pw.foodorigin.presentation.screen.productdetails.model.toProductUi
+import eu.pw.foodorigin.presentation.screen.productdetails.model.toUi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -51,11 +52,11 @@ class ProductDetailsViewModel(
 			Timber.d("BigBrands: $bigBrands")
 
 			// TODO need to thin about what exactly happens here
-			val relatedBigBrandName = getRelatedBigBrand(product, bigBrands)?.nameUI
+			val relatedBigBrandName = getRelatedBigBrand(product, bigBrands)
 			ProductDetailsUiState.Success(
 				productUi = product.toProductUi(),
 				productCode = productCode,
-				relatedBigBrandName = relatedBigBrandName,
+				relatedBigBrand = relatedBigBrandName?.toUi(),
 			                             )
 		}
 		catch (

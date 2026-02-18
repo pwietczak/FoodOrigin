@@ -3,6 +3,7 @@ package eu.pw.foodorigin.presentation.previewDataProvider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import eu.pw.foodorigin.R
 import eu.pw.foodorigin.presentation.screen.productdetails.ProductDetailsUiState
+import eu.pw.foodorigin.presentation.screen.productdetails.model.BigBrandUi
 import eu.pw.foodorigin.presentation.screen.productdetails.model.ProductUi
 
 class ProductDetailsUiStatePreviewDataProvider : PreviewParameterProvider<ProductDetailsUiState> {
@@ -20,7 +21,10 @@ class ProductDetailsUiStatePreviewDataProvider : PreviewParameterProvider<Produc
 				quantity = "2137 kilo",
 				link = "www.niezesrajsie.edu",
 			                     ),
-			relatedBigBrandName = "Test Big Brand",
+			relatedBigBrand = BigBrandUi(
+				nameUi = "Test Big Brand",
+				brandsListLink = "www.bigbrand.com",
+			                            ),
 		                             ),
 	                                )
 }

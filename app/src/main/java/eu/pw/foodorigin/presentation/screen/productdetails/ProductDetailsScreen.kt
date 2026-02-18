@@ -117,14 +117,17 @@ fun SuccessScreen(
 				            )
 
 				ProductDetailItem(
+					modifier = Modifier.fillMaxWidth(),
 					label = stringResource(R.string.product_details_barcode_label),
 					value = uiState.productCode,
 				                 )
 				ProductDetailItem(
+					modifier = Modifier.fillMaxWidth(),
 					label = stringResource(R.string.product_details_quantity_label),
 					value = product.quantity,
 				                 )
 				ProductDetailItem(
+					modifier = Modifier.fillMaxWidth(),
 					label = stringResource(R.string.product_details_brands_label),
 					value = product.brand,
 				                 )
@@ -138,7 +141,7 @@ fun SuccessScreen(
 				modifier = Modifier
 					.fillMaxWidth()
 					.padding(top = 8.dp),
-				uiState = uiState,
+				relatedBigBrand = uiState.relatedBigBrand,
 			                   )
 		}
 	}

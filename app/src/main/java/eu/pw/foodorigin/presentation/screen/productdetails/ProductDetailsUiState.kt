@@ -1,5 +1,6 @@
 package eu.pw.foodorigin.presentation.screen.productdetails
 
+import eu.pw.foodorigin.presentation.screen.productdetails.model.BigBrandUi
 import eu.pw.foodorigin.presentation.screen.productdetails.model.ProductUi
 
 sealed interface ProductDetailsUiState {
@@ -8,6 +9,6 @@ sealed interface ProductDetailsUiState {
 	data class Success(
 		val productCode: String = "",
 		val productUi: ProductUi,
-		val relatedBigBrandName: String? = null,
+		val relatedBigBrand: BigBrandUi? = null,
 	                  ) : ProductDetailsUiState
 }
