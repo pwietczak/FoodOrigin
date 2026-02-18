@@ -17,11 +17,14 @@ class ProductResultDtoMapperTest {
             product = null
                                                )
         val expectedProduct = Product(
-            id = null,
-            code = "12345",
-            productName = null,
-            brands = null,
-            brandsTags = null
+	        id = null,
+	        code = "12345",
+	        productName = null,
+	        brands = null,
+	        brandsTags = null,
+	        imageUrl = null,
+	        quantity = null,
+	        link = null,
                                      )
 
         val result = mapper(productResultDto)
@@ -40,7 +43,10 @@ class ProductResultDtoMapperTest {
             code = null,
             productName = null,
             brands = null,
-            brandsTags = null
+            brandsTags = null,
+            imageUrl = null,
+            quantity = null,
+            link = null,
                                      )
 
         val result = mapper(productResultDto)
@@ -65,7 +71,10 @@ class ProductResultDtoMapperTest {
             code = "12345",
             productName = "Test Product",
             brands = "Test Brand",
-            brandsTags = listOf("tag1", "tag2")
+            brandsTags = listOf("tag1", "tag2"),
+            imageUrl = null,
+            quantity = null,
+            link = null,
         )
 
         val result = mapper(productResultDto)
@@ -90,7 +99,10 @@ class ProductResultDtoMapperTest {
             code = "12345",
             productName = null,
             brands = "Test Brand",
-            brandsTags = null
+            brandsTags = null,
+            imageUrl = null,
+            quantity = null,
+            link = null,
         )
 
         val result = mapper(productResultDto)
