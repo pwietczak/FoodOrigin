@@ -28,7 +28,7 @@ mockk = "1.14.9"
 turbine = "1.2.1"
 kotlinx-coroutines-test = "1.10.2"
 slf4jSimple = "2.0.17"
-#images
+#Image loading
 coil = "3.3.0"
 
 [libraries]
@@ -80,7 +80,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
-#imges
+#Image loading
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 

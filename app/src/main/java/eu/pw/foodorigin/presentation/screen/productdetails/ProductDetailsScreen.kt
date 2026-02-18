@@ -5,15 +5,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,12 +43,14 @@ import eu.pw.foodorigin.ui.theme.FoodOriginTheme
 fun ProductDetailsScreen(
 	modifier: Modifier,
 	viewModel: ProductDetailsViewModel,
+	onBackClick: () -> Unit,
                         ) {
 	val uiState = viewModel.uiState.collectAsState()
 
 	ProductDetailsScreenContent(
 		modifier = modifier,
 		uiState = uiState.value,
+		onBackClick = onBackClick
 	                           )
 }
 
@@ -52,11 +58,13 @@ fun ProductDetailsScreen(
 fun ProductDetailsScreenContent(
 	modifier: Modifier,
 	uiState: ProductDetailsUiState,
-                               ) {
+	onBackClick: () -> Unit,
+	) {
 	when (uiState) {
 		is ProductDetailsUiState.Success -> SuccessScreen(
 			modifier = modifier,
 			uiState = uiState,
+			onBackClick = onBackClick
 		                                                 )
 		is ProductDetailsUiState.Loading -> LoadingScreen(
 			modifier = modifier,
@@ -73,6 +81,7 @@ fun ProductDetailsScreenContent(
 fun SuccessScreen(
 	uiState: ProductDetailsUiState.Success,
 	modifier: Modifier,
+	onBackClick: () -> Unit,
                  ) {
 	val scrollState = rememberScrollState()
 	val product = uiState.productUi
@@ -81,10 +90,22 @@ fun SuccessScreen(
 		modifier = modifier.fillMaxSize(),
 		topBar = {
 			CenterAlignedTopAppBar(
+				navigationIcon = {
+					IconButton(
+						onClick = onBackClick,
+					          ) {
+						Icon(
+							imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+							contentDescription = stringResource(
+								R.string.back_button_content_description,
+							                                   ),
+						    )
+					}
+				},
 				title = {
 					Text(
 						text = product.productName.orEmpty(),
-						style = MaterialTheme.typography.headlineMedium,
+						style = MaterialTheme.typography.bodyLarge,
 						maxLines = 2,
 						overflow = TextOverflow.Ellipsis,
 					    )
@@ -96,7 +117,7 @@ fun SuccessScreen(
 				                                          ),
 			                      )
 		},
-		contentWindowInsets = WindowInsets()
+		contentWindowInsets = WindowInsets(),
 	        ) { innerPadding ->
 		Column(
 			modifier = Modifier
@@ -112,14 +133,17 @@ fun SuccessScreen(
 				verticalArrangement = Arrangement.spacedBy(8.dp),
 			      ) {
 				ProductImage(
-					modifier = Modifier.size(240.dp), //TODO some better modifier
+					modifier = Modifier
+						.fillMaxWidth(0.75f)
+						.aspectRatio(1f)
+						.padding(vertical = 16.dp),
 					imageUrl = product.imageUrl,
 				            )
 
 				ProductDetailItem(
 					modifier = Modifier.fillMaxWidth(),
 					label = stringResource(R.string.product_details_barcode_label),
-					value = uiState.productCode,
+					value = product.code,
 				                 )
 				ProductDetailItem(
 					modifier = Modifier.fillMaxWidth(),
@@ -190,6 +214,7 @@ fun ProductDetailsScreenPreview(
 		ProductDetailsScreenContent(
 			modifier = Modifier.background(MaterialTheme.colorScheme.background),
 			uiState = uiState,
+			onBackClick = {}
 		                           )
 	}
 }

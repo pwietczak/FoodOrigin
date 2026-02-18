@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import eu.pw.foodorigin.R
-import eu.pw.foodorigin.data.remote.util.formatUrl
+import eu.pw.foodorigin.data.remote.util.normalizeUrl
 import eu.pw.foodorigin.presentation.screen.productdetails.model.BigBrandUi
 import timber.log.Timber
 
@@ -31,7 +31,7 @@ fun BigBrandInformation(
 	relatedBigBrand: BigBrandUi?,
                        ) {
 	relatedBigBrand?.let { bigBrand ->
-		val urlToOpen = formatUrl(bigBrand.brandsListLink)
+		val urlToOpen = normalizeUrl(bigBrand.brandsListLink)
 		val uriHandler = LocalUriHandler.current
 
 		Row(

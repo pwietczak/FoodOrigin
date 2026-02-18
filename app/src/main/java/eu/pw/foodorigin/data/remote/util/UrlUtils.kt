@@ -5,7 +5,7 @@ package eu.pw.foodorigin.data.remote.util
  * If it doesn't, it prepends "https://" to it.
  * Also handles trimming and null/blank checks.
  */
-fun formatUrl(url: String?): String? {
+fun normalizeUrl(url: String?): String? {
     val trimmed = url?.trim()
     if (trimmed.isNullOrBlank()) return null
     

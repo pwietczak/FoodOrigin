@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import eu.pw.foodorigin.R
-import eu.pw.foodorigin.data.remote.util.formatUrl
+import eu.pw.foodorigin.data.remote.util.normalizeUrl
 import eu.pw.foodorigin.ui.theme.FoodOriginTheme
 import timber.log.Timber
 
@@ -26,7 +26,7 @@ fun ProductLink(
 	modifier: Modifier,
 	value: String?,
                ) {
-	val urlToOpen = formatUrl(value)
+	val urlToOpen = normalizeUrl(value)
 	val uriHandler = LocalUriHandler.current
 
 	if (urlToOpen != null && value != null) {

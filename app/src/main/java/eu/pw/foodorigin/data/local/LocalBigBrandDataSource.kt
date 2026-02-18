@@ -102,6 +102,7 @@ class LocalBigBrandDataSource : BigBrandDataSource {
 			"Movenpick",
 			"Munch",
 			"Nałęczowianka",
+			"Naleczowianka",
 			"Nancare",
 			"Nature's Bounty",
 			"Nescafé",

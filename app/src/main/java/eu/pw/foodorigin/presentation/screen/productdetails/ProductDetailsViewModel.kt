@@ -51,7 +51,6 @@ class ProductDetailsViewModel(
 			Timber.d("Product: $product")
 			Timber.d("BigBrands: $bigBrands")
 
-			// TODO need to think about what exactly happens here
 			val relatedBigBrandName = getRelatedBigBrand(product, bigBrands)
 			ProductDetailsUiState.Success(
 				productUi = product.toProductUi(),

@@ -29,4 +29,5 @@
     <string name="product_details_barcode_label">Barcode</string>
     <string name="product_details_quantity_label">Quantity</string>
     <string name="product_details_brands_label">Brands</string>
+    <string name="back_button_content_description">Go back button</string>
 </resources>

@@ -3,6 +3,7 @@ package eu.pw.foodorigin.data.remote.util
 import eu.pw.foodorigin.R
 import eu.pw.foodorigin.domain.LocalizedException
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.statement.HttpResponse
 import timber.log.Timber
 
@@ -26,6 +27,9 @@ suspend inline fun <reified T> responseToResult(
 		in 200..299 ->
 			try {
 				Result.success(response.body<T>())
+			}catch (rte: HttpRequestTimeoutException){
+				Timber.e(rte)
+				Result.failure(LocalizedException(R.string.exception_request_timed_out))
 			}catch (e: Exception){
 				Timber.e(e)
 				Result.failure(e)

@@ -50,7 +50,10 @@ fun ProductNavHost(
 		composable<ProductDestination.ProductDetails>{
 			ProductDetailsScreen(
 				modifier = modifier,
-				viewModel = koinViewModel()
+				viewModel = koinViewModel(),
+				onBackClick = {
+					Timber.d("ProductDetails onBackClick(), navigating back")
+					navHostController.popBackStack()}
 			)
 		}
 	}
