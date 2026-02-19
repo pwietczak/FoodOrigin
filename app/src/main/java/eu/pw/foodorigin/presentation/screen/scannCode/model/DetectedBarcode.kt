@@ -4,5 +4,5 @@ import android.graphics.Rect
 
 data class DetectedBarcode(
 	val value: String,
-	val boundingBox: Rect?
+	val boundingBox: Rect
                           )

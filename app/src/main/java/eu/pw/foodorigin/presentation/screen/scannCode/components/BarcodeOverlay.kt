@@ -12,14 +12,15 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toComposeRect
 import androidx.compose.ui.unit.dp
 
-private val DETECTION_RECTANGLE_STROKE_WIDTH = 4.dp
+private val DETECTION_RECTANGLE_STROKE_WIDTH = 1.dp
+private val BARCODE_OVERLAY_STROKE_COLOR = Color.Red
 
 @Composable
 fun BarcodeOverlay(rect: Rect) {
 	val composeRect = rect.toComposeRect()
 	Canvas(modifier = Modifier.fillMaxSize()) {
 		drawRect(
-			color = Color.Red,
+			color = BARCODE_OVERLAY_STROKE_COLOR,
 			topLeft = Offset(composeRect.left, composeRect.top),
 			size = Size(composeRect.width, composeRect.height),
 			style = Stroke(width = DETECTION_RECTANGLE_STROKE_WIDTH.toPx())
