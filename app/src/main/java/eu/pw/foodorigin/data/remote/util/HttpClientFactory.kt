@@ -12,11 +12,15 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object HttpClientFactory {
-	fun create(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
+	fun create(
+		engine: HttpClientEngine,
+		userAgentProvider: UserAgentProvider,
+	          ): HttpClient = HttpClient(engine) {
 		install(Logging) {
 			if (BuildConfig.DEBUG) {
 				logger = Logger.ANDROID
@@ -36,6 +40,7 @@ object HttpClientFactory {
 		}
 		defaultRequest {
 			contentType(ContentType.Application.Json)
+			userAgent(userAgentProvider())
 		}
 	}
 }
