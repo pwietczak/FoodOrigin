@@ -1,6 +1,7 @@
 package eu.pw.foodorigin.presentation.screen.productcodeinput
 
 data class ProductCodeInputUiState(
-	val isLoading: Boolean = true,
-	val productCode: String? = null
+	val barcode: String = "",
+	val errorMessageResId: Int? = null,
+	val isLoading: Boolean = false,
                                   )

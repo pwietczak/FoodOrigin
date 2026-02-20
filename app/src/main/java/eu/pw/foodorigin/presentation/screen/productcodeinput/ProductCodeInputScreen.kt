@@ -2,35 +2,39 @@ package eu.pw.foodorigin.presentation.screen.productcodeinput
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import eu.pw.foodorigin.R
+import eu.pw.foodorigin.presentation.previewDataProvider.ProductCodeInputUiStatePreviewDataProvider
 import eu.pw.foodorigin.ui.theme.FoodOriginTheme
 
 @Composable
@@ -41,10 +45,22 @@ fun ProductCodeInputScreen(
 	onSearch: (String) -> Unit,
                           ) {
 
+	val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+	LaunchedEffect(viewModel.events) {
+		viewModel.events.collect { event ->
+			when (event) {
+				is ProductCodeUiEvent.NavigateToDetails -> onSearch(event.barcode)
+			}
+		}
+	}
+
 	ProductCodeInputScreenContent(
 		modifier = modifier,
+		uiState = uiState,
+		onBarcodeChange = viewModel::onBarcodeChange,
+		onSearchClicked = viewModel::onSearchClicked,
 		navigateToScanCode = navigateToScanCode,
-		onSearch = onSearch
 	                             )
 }
 
@@ -52,20 +68,29 @@ fun ProductCodeInputScreen(
 @Composable
 private fun ProductCodeInputScreenContent(
 	modifier: Modifier,
+	uiState: ProductCodeInputUiState,
+	onBarcodeChange: (String) -> Unit,
+	onSearchClicked: () -> Unit,
 	navigateToScanCode: () -> Unit,
-	onSearch: (String) -> Unit,
-	) {
-	var barcode by rememberSaveable { mutableStateOf("") }
-
-	Column (
+                                         ) {
+	if (uiState.isLoading) {
+		Box(
+			modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center,
+		   ) {
+			CircularProgressIndicator()
+		}
+	}
+	else Column(
 		modifier = modifier
 			.fillMaxSize()
 			.padding(16.dp),
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center,
-		) {
+	           ) {
 		Column(
-			modifier = Modifier.weight(1f),
+			modifier = Modifier
+				.weight(1f)
+				.padding(16.dp),
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.Center,
 		      ) {
@@ -73,21 +98,33 @@ private fun ProductCodeInputScreenContent(
 				text = stringResource(R.string.product_code_input_screen_description_text),
 				color = MaterialTheme.colorScheme.onBackground,
 				style = MaterialTheme.typography.bodyLarge,
-				modifier = Modifier.padding(16.dp),
 				textAlign = TextAlign.Center,
 			    )
 			Spacer(modifier = Modifier.height(16.dp))
 			OutlinedTextField(
-				value = barcode,
-				onValueChange = { barcode = it },
-				label = { Text(stringResource(R.string.product_code_input_screen_text_field_label)) },
+				modifier = Modifier.fillMaxWidth(),
+				value = uiState.barcode,
+				onValueChange = onBarcodeChange,
+				label = {
+					Text(
+						text = stringResource(R.string.product_code_input_screen_text_field_label),
+					    )
+				},
 				trailingIcon = {
 					IconButton(onClick = { navigateToScanCode() }) {
 						Icon(
-							imageVector = Icons.Default.QrCodeScanner,
+							painter = painterResource(R.drawable.barcode_scanner_24dp),
 							contentDescription = stringResource(
 								R.string.product_code_input_screen_button_scan_code_content_desc,
 							                                   ),
+						    )
+					}
+				},
+				supportingText = {
+					uiState.errorMessageResId?.let {
+						Text(
+							text = stringResource(it),
+							color = MaterialTheme.colorScheme.error,
 						    )
 					}
 				},
@@ -96,14 +133,19 @@ private fun ProductCodeInputScreenContent(
 					keyboardType = KeyboardType.Number,
 				                                              ),
 				keyboardActions = KeyboardActions(
-					onDone = { onSearch(barcode) }
-				),
+					onDone = { onSearchClicked() },
+				                                 ),
 			                 )
-
 		}
-		Button(onClick = {onSearch(barcode)}) {
+		Button(
+			modifier = Modifier.fillMaxWidth(0.5f),
+			onClick = onSearchClicked,
+			shape = RoundedCornerShape(16.dp),
+		      ) {
 			Text(
 				text = stringResource(R.string.product_code_input_screen_button_search_text),
+				style = MaterialTheme.typography.bodyLarge,
+				modifier = Modifier.padding(8.dp),
 			    )
 		}
 	}
@@ -111,12 +153,18 @@ private fun ProductCodeInputScreenContent(
 
 @PreviewLightDark
 @Composable
-fun ProductCodeInputScreenPreview() {
+fun ProductCodeInputScreenPreview(
+	@PreviewParameter(
+		ProductCodeInputUiStatePreviewDataProvider::class,
+	                 ) uiState: ProductCodeInputUiState,
+                                 ) {
 	FoodOriginTheme {
 		ProductCodeInputScreenContent(
 			modifier = Modifier.background(MaterialTheme.colorScheme.background),
+			uiState = uiState,
+			onBarcodeChange = {},
+			onSearchClicked = {},
 			navigateToScanCode = {},
-			onSearch = {},
 		                             )
 	}
 }
