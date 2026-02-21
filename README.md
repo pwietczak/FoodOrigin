@@ -3,8 +3,6 @@
 
 [![Android CI](https://github.com/pwietczak/FoodOrigin/actions/workflows/android_ci.yml/badge.svg)](https://github.com/pwietczak/FoodOrigin/actions/workflows/android_ci.yml)
 ![Branch](https://img.shields.io/badge/branch-develop-blue)
-![Build](https://img.shields.io/badge/build-release-informational)
-![Tests](https://img.shields.io/badge/tests-release-green)
 
 ##  Features
 
@@ -27,6 +25,7 @@ The application is built using modern Android development standards:
 - **Scanning**: [Google ML Kit Barcode Scanning](https://developers.google.com/ml-kit/vision/barcode-scanning)
 - **Asynchrony**: Kotlin Coroutines & Flow
 - **Logging**: [Timber](https://github.com/JakeWharton/timber)
+- **Image Loading**: [Coli](https://github.com/coil-kt/coil)
 
 ## Project Structure
 

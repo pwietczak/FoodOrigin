@@ -19,4 +19,15 @@
     <string name="exception_something_went_wrong">Something went wrong</string>
     <string name="exception_unknown_error">Unknown error</string>
     <string name="exception_product_repository_product_not_found">Product not found</string>
+    <string name="exception_product_not_found">Product not found</string>
+
+    <string name="product_details_product_image_content_description">Product image</string>
+    <string name="product_details_barcode_icon_content_description">Barcode</string>
+    <string name="product_details_big_brand_information">"This product could be related to %1$s</string>
+    <string name="product_details_link_label">Product page</string>
+    <string name="product_details_link_content_description">Open link</string>
+    <string name="product_details_barcode_label">Barcode</string>
+    <string name="product_details_quantity_label">Quantity</string>
+    <string name="product_details_brands_label">Brands</string>
+    <string name="back_button_content_description">Go back button</string>
 </resources>

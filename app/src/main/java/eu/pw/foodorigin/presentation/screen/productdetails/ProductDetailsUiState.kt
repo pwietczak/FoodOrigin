@@ -1,10 +1,14 @@
 package eu.pw.foodorigin.presentation.screen.productdetails
 
+import eu.pw.foodorigin.presentation.screen.productdetails.model.BigBrandUi
 import eu.pw.foodorigin.presentation.screen.productdetails.model.ProductUi
 
-data class ProductDetailsUiState(
-	val isLoading : Boolean = true,
-	val productCode : String = "",
-	val productDto: ProductUi? = null,
-	val relatedBigBrandName: String? = null
-								)
+sealed interface ProductDetailsUiState {
+	object Loading : ProductDetailsUiState
+	data class Error(val errorStringRes: Int) : ProductDetailsUiState
+	data class Success(
+		val productCode: String = "",
+		val productUi: ProductUi,
+		val relatedBigBrand: BigBrandUi? = null,
+	                  ) : ProductDetailsUiState
+}

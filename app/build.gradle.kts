@@ -55,6 +55,7 @@ dependencies {
 	implementation(libs.bundles.barcodeScanning)
 	implementation(libs.bundles.cameraX)
 	implementation(libs.accompanist.permissions)
+	implementation(libs.bundles.coil)
 
 	testImplementation(libs.bundles.unitTests)
 	androidTestImplementation(libs.androidx.junit)

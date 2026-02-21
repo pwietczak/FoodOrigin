@@ -6,7 +6,10 @@ data class ProductUi(
 			val id: String?,
 			val productName: String?,
 			val brand: String?,
-			val brandsTags: List<String>?
+			val code: String? = null,
+			val imageUrl: String?,
+			val quantity: String? = null,
+			val link: String? = null,
 					)
 
 fun Product.toProductUi()=
@@ -14,5 +17,8 @@ fun Product.toProductUi()=
 			id = id,
 			productName = productName,
 			brand = brands,
-			brandsTags = brandsTags
+			code = code,
+			imageUrl = imageUrl,
+			quantity = quantity,
+			link = link,
 					   )

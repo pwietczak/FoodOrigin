@@ -16,6 +16,7 @@ class BigBrandRepositoryImplTest {
 	private val bigBrand1 = BigBrand(
 		nameUI = "test UI name",
 		keywords = listOf("test UI name", "test name"),
+		brandsListLink = ""
 	                                )
 
 	@Test

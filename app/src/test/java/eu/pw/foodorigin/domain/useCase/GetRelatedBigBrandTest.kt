@@ -12,12 +12,14 @@ class GetRelatedBigBrandTest {
 
     private val testBigBrand = BigBrand(
         nameUI = "Test Brand",
-        keywords = listOf("Test", "Brand")
+        keywords = listOf("Test", "Brand"),
+        brandsListLink = "www.test.com"
     )
 
     private val nestleBrand = BigBrand(
         nameUI = "Nestlé",
-        keywords = listOf("Nestle", "Winiary")
+        keywords = listOf("Nestle", "Winiary"),
+        brandsListLink = "www.test.com"
     )
 
     @Test
@@ -27,7 +29,10 @@ class GetRelatedBigBrandTest {
             code = "123",
             productName = "Product",
             brands = "Test",
-            brandsTags = null
+            brandsTags = null,
+            imageUrl = null,
+            quantity = null,
+            link = null
         )
         
         val result = getRelatedBigBrand(product, emptyList())
@@ -42,7 +47,10 @@ class GetRelatedBigBrandTest {
             code = "123",
             productName = "Product",
             brands = "Test Brand",
-            brandsTags = null
+            brandsTags = null,
+            imageUrl = null,
+            quantity = null,
+            link = null
         )
         
         val result = getRelatedBigBrand(product, listOf(testBigBrand))
@@ -57,7 +65,10 @@ class GetRelatedBigBrandTest {
             code = "123",
             productName = "Product",
             brands = "test",
-            brandsTags = null
+            brandsTags = null,
+            imageUrl = null,
+            quantity = null,
+            link = null
         )
         
         val result = getRelatedBigBrand(product, listOf(testBigBrand))
@@ -72,7 +83,10 @@ class GetRelatedBigBrandTest {
             code = "123",
             productName = "Product",
             brands = "Other",
-            brandsTags = listOf("BrandTag", "Brand")
+            brandsTags = listOf("BrandTag", "Brand"),
+            imageUrl = null,
+            quantity = null,
+            link = null
         )
         
         val result = getRelatedBigBrand(product, listOf(testBigBrand))
@@ -87,7 +101,10 @@ class GetRelatedBigBrandTest {
             code = "123",
             productName = "Product",
             brands = "Other",
-            brandsTags = listOf("None")
+            brandsTags = listOf("None"),
+            imageUrl = null,
+            quantity = null,
+            link = null
         )
         
         val result = getRelatedBigBrand(product, listOf(testBigBrand))
@@ -102,7 +119,10 @@ class GetRelatedBigBrandTest {
             code = "123",
             productName = "Product",
             brands = "Winiary",
-            brandsTags = null
+            brandsTags = null,
+            imageUrl = null,
+            quantity = null,
+            link = null
         )
         val bigBrands = listOf(testBigBrand, nestleBrand)
         
@@ -113,13 +133,20 @@ class GetRelatedBigBrandTest {
 
     @Test
     fun `invoke should return null when BigBrand keyword are empty`() {
-        val emptyTermsBrand = BigBrand("Empty", emptyList())
+        val emptyTermsBrand = BigBrand(
+	        nameUI = "Empty",
+            brandsListLink = "",
+	        keywords = emptyList()
+                                      )
         val product = Product(
             id = "1",
             code = "123",
             productName = "Product",
             brands = "Empty",
-            brandsTags = null
+            brandsTags = null,
+            imageUrl = null,
+            quantity = null,
+            link = null
         )
         
         val result = getRelatedBigBrand(product, listOf(emptyTermsBrand))
@@ -130,12 +157,15 @@ class GetRelatedBigBrandTest {
     @Test
     fun `invoke should return null when product brands and tags are null`() {
         val product = Product(
-            id = "1",
-            code = "123",
-            productName = "Product",
-            brands = null,
-            brandsTags = null
-        )
+	        id = "1",
+	        code = "123",
+	        productName = "Product",
+	        brands = null,
+	        brandsTags = null,
+	        imageUrl = null,
+	        quantity = null,
+	        link = null
+                             )
         
         val result = getRelatedBigBrand(product, listOf(testBigBrand))
         

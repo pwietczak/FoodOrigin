@@ -10,5 +10,10 @@ data class ProductDto(
 	val productName: String? = null,
 	val brands: String? = null,
 	@SerialName("brands_tags")
-	val brandsTags: List<String>? = null
+	val brandsTags: List<String>? = null,
+	@SerialName("image_url")
+	val imageUrl: String? = null,
+	val quantity: String? = null,
+	val link: String? = null,
+
 )
