@@ -13,6 +13,9 @@ suspend inline fun <reified T> safeCall (
 	val response =
 		try {
 			execute()
+		}catch (rte: HttpRequestTimeoutException){
+			Timber.e(rte)
+			return Result.failure(LocalizedException(R.string.exception_request_timed_out))
 		}catch (e: Exception){
 			Timber.e(e)
 			return Result.failure(e)
@@ -27,9 +30,6 @@ suspend inline fun <reified T> responseToResult(
 		in 200..299 ->
 			try {
 				Result.success(response.body<T>())
-			}catch (rte: HttpRequestTimeoutException){
-				Timber.e(rte)
-				Result.failure(LocalizedException(R.string.exception_request_timed_out))
 			}catch (e: Exception){
 				Timber.e(e)
 				Result.failure(e)
