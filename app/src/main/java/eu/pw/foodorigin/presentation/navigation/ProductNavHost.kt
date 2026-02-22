@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import eu.pw.foodorigin.presentation.screen.productcodeinput.ProductCodeInputScreen
 import eu.pw.foodorigin.presentation.screen.productcodeinput.ProductCodeInputViewModel
 import eu.pw.foodorigin.presentation.screen.productdetails.ProductDetailsScreen
-import eu.pw.foodorigin.presentation.screen.scannCode.ScanCodeScreen
+import eu.pw.foodorigin.presentation.screen.scanBarcode.ScanBarcodeScreen
 import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 
@@ -37,9 +37,10 @@ fun ProductNavHost(
 			)
 		}
 		composable<ProductDestination.CodeScanning>{
-			ScanCodeScreen(
+			ScanBarcodeScreen(
 				modifier = modifier,
-				onCodeDetected = {
+				viewModel = koinViewModel(),
+				onBarcodeDeprecated = {
 					Timber.d("Code detected: $it navigating to ProductDetails")
 					navHostController.navigate(ProductDestination.ProductDetails(it)) {
 						popUpTo(ProductDestination.ProductCodeInput)

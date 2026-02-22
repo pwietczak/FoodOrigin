@@ -1,8 +1,8 @@
-package eu.pw.foodorigin.presentation.screen.scannCode.model
+package eu.pw.foodorigin.presentation.screen.scanBarcode.model
 
 import android.graphics.Rect
 
 data class DetectedBarcode(
-	val value: String,
+	val code: String,
 	val boundingBox: Rect
                           )

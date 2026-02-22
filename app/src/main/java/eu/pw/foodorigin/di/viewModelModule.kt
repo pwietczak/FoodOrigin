@@ -2,7 +2,7 @@ package eu.pw.foodorigin.di
 
 import eu.pw.foodorigin.presentation.screen.productcodeinput.ProductCodeInputViewModel
 import eu.pw.foodorigin.presentation.screen.productdetails.ProductDetailsViewModel
-import eu.pw.foodorigin.presentation.screen.scannCode.ScanCodeViewModel
+import eu.pw.foodorigin.presentation.screen.scanBarcode.ScanBarcodeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -16,5 +16,5 @@ val viewModelModule = module {
             getRelatedBigBrand = get()
         )
     }
-    viewModel { ScanCodeViewModel(get()) }
+    viewModel { ScanBarcodeViewModel() }
 }
