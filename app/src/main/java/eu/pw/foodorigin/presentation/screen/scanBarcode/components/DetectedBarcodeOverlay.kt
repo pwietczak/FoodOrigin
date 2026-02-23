@@ -1,4 +1,4 @@
-package eu.pw.foodorigin.presentation.screen.scannCode.components
+package eu.pw.foodorigin.presentation.screen.scanBarcode.components
 
 import android.graphics.Rect
 import androidx.compose.foundation.Canvas
@@ -12,17 +12,21 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toComposeRect
 import androidx.compose.ui.unit.dp
 
-private val DETECTION_RECTANGLE_STROKE_WIDTH = 4.dp
+private val DETECTION_RECTANGLE_STROKE_WIDTH = 1.dp
+private val BARCODE_OVERLAY_STROKE_COLOR = Color.Red
 
 @Composable
-fun BarcodeOverlay(rect: Rect) {
+fun BarcodeOverlay(
+	modifier: Modifier,
+	rect: Rect,
+                  ) {
 	val composeRect = rect.toComposeRect()
-	Canvas(modifier = Modifier.fillMaxSize()) {
+	Canvas(modifier = modifier.fillMaxSize()) {
 		drawRect(
-			color = Color.Red,
+			color = BARCODE_OVERLAY_STROKE_COLOR,
 			topLeft = Offset(composeRect.left, composeRect.top),
 			size = Size(composeRect.width, composeRect.height),
-			style = Stroke(width = DETECTION_RECTANGLE_STROKE_WIDTH.toPx())
+			style = Stroke(width = DETECTION_RECTANGLE_STROKE_WIDTH.toPx()),
 		        )
 	}
 }
