@@ -26,11 +26,11 @@ class ScanBarcodeViewModel: ViewModel() {
 
 	fun onCodeDetected(detectedBarcode: DetectedBarcode) {
 		if (isBarcodeValid(detectedBarcode)) {
-			Timber.d("############### Detected Barcode: $detectedBarcode")
+			Timber.d("Detected Barcode: $detectedBarcode")
 			_uiState.update { it.copy(detectedBarcode = detectedBarcode) }
 			viewModelScope.launch {
 				delay(AFTER_DETECTION_DELAY)
-				_events.trySend(ScanBarcodeEvent.BarcodeDetected(detectedBarcode))
+				_events.trySend(ScanBarcodeEvent.BarcodeScanned(detectedBarcode.code))
 			}
 		}
 	}

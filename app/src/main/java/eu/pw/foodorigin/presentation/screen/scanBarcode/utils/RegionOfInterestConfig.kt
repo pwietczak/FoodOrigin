@@ -23,4 +23,9 @@ object RegionOfInterestConfig {
 			(top + roiHeight).toInt()
 		           )
 	}
+
+	fun Rect.isCenterInsideROI(screenWidth: Float, screenHeight: Float): Boolean {
+		val roi = getRegionOfInterestRect(screenWidth, screenHeight)
+		return roi.contains(this.centerX(), this.centerY())
+	}
 }

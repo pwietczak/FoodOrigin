@@ -40,7 +40,7 @@ fun ProductNavHost(
 			ScanBarcodeScreen(
 				modifier = modifier,
 				viewModel = koinViewModel(),
-				onBarcodeDeprecated = {
+				onBarcodeScanned = {
 					Timber.d("Code detected: $it navigating to ProductDetails")
 					navHostController.navigate(ProductDestination.ProductDetails(it)) {
 						popUpTo(ProductDestination.ProductCodeInput)

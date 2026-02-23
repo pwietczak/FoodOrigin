@@ -4,7 +4,6 @@ import androidx.camera.core.ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -20,7 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.pw.foodorigin.presentation.screen.scanBarcode.components.BarcodeOverlay
 import eu.pw.foodorigin.presentation.screen.scanBarcode.components.PreviewOverlay
 import eu.pw.foodorigin.presentation.screen.scanBarcode.model.DetectedBarcode
-import eu.pw.foodorigin.presentation.screen.scanBarcode.utils.RegionOfInterestConfig.getRegionOfInterestRect
+import eu.pw.foodorigin.presentation.screen.scanBarcode.utils.RegionOfInterestConfig.isCenterInsideROI
 import eu.pw.foodorigin.presentation.screen.scanBarcode.utils.getBarcodeScanner
 import eu.pw.foodorigin.presentation.screen.scanBarcode.utils.getCameraController
 
@@ -28,15 +27,15 @@ import eu.pw.foodorigin.presentation.screen.scanBarcode.utils.getCameraControlle
 fun ScanBarcodeScreen(
 	modifier: Modifier = Modifier,
 	viewModel: ScanBarcodeViewModel,
-	onBarcodeDeprecated: (String) -> Unit,
+	onBarcodeScanned: (String) -> Unit,
                      ) {
 	val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
 	LaunchedEffect(Unit) {
 		viewModel.events.collect {
 			when (it) {
-				is ScanBarcodeEvent.BarcodeDetected -> {
-					onBarcodeDeprecated(it.barcode.code)
+				is ScanBarcodeEvent.BarcodeScanned -> {
+					onBarcodeScanned(it.code)
 				}
 			}
 		}
@@ -59,41 +58,9 @@ fun ScanBarcodeScreenContent(
 	val lifecycleOwner = LocalLifecycleOwner.current
 
 	val barcodeScanner = remember { getBarcodeScanner() }
-	val cameraController = remember { getCameraController(context) }
-
-	BoxWithConstraints(modifier = modifier.fillMaxSize()) {
-		val roiRect = remember(maxWidth, maxHeight) {
-			getRegionOfInterestRect(
-				constraints.maxWidth.toFloat(),
-				constraints.maxHeight.toFloat(),
-			                       )
-		}
-
-		DisposableEffect(lifecycleOwner) {
-			cameraController.setImageAnalysisAnalyzer(
-				ContextCompat.getMainExecutor(context),
-				MlKitAnalyzer(
-					listOf(barcodeScanner),
-					COORDINATE_SYSTEM_VIEW_REFERENCED,
-					ContextCompat.getMainExecutor(context),
-				             ) { result: MlKitAnalyzer.Result? ->
-					val barcode =
-						result?.getValue(barcodeScanner)?.firstOrNull() ?: return@MlKitAnalyzer
-					val boundingBox = barcode.boundingBox ?: return@MlKitAnalyzer
-					val value = barcode.rawValue ?: return@MlKitAnalyzer
-					if (roiRect.contains(
-							boundingBox.centerX(), boundingBox.centerY(),
-					                    )
-					) onBarcodeDetected(DetectedBarcode(value, boundingBox))
-				},
-			                                         )
-
-			cameraController.bindToLifecycle(lifecycleOwner)
-			onDispose {
-				cameraController.clearImageAnalysisAnalyzer()
-				cameraController.unbind()
-				barcodeScanner.close()
-			}
+	val cameraController = remember {
+		getCameraController(context).apply {
+			bindToLifecycle(lifecycleOwner)
 		}
 	}
 
@@ -104,12 +71,36 @@ fun ScanBarcodeScreenContent(
 				PreviewView(ctx).apply {
 					scaleType = PreviewView.ScaleType.FILL_CENTER
 					controller = cameraController
+					cameraController.setImageAnalysisAnalyzer(
+						ContextCompat.getMainExecutor(context),
+						MlKitAnalyzer(
+							listOf(barcodeScanner),
+							COORDINATE_SYSTEM_VIEW_REFERENCED,
+							ContextCompat.getMainExecutor(context),
+						             ) { result: MlKitAnalyzer.Result? ->
+							val barcode = result?.getValue(barcodeScanner)?.firstOrNull()
+							val boundingBox = barcode?.boundingBox
+							val value = barcode?.rawValue
+							if (value != null && boundingBox != null) {
+								if (boundingBox.isCenterInsideROI(width.toFloat(), height.toFloat()))
+									onBarcodeDetected(DetectedBarcode(value, boundingBox))
+							}
+						},
+					                                         )
 				}
 			},
 		           )
 		PreviewOverlay()
 		uiState.detectedBarcode?.let {
 			BarcodeOverlay(modifier = Modifier, rect = it.boundingBox)
+		}
+	}
+
+	DisposableEffect(lifecycleOwner) {
+		onDispose {
+			cameraController.clearImageAnalysisAnalyzer()
+			cameraController.unbind()
+			barcodeScanner.close()
 		}
 	}
 }
