@@ -28,6 +28,7 @@ fun ScanBarcodeScreen(
 	modifier: Modifier = Modifier,
 	viewModel: ScanBarcodeViewModel,
 	onBarcodeScanned: (String) -> Unit,
+	onExit: () -> Unit,
                      ) {
 	val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -45,6 +46,7 @@ fun ScanBarcodeScreen(
 		modifier = modifier,
 		uiState = uiState,
 		onBarcodeDetected = viewModel::onCodeDetected,
+		onExit = onExit,
 	                        )
 }
 
@@ -53,7 +55,8 @@ fun ScanBarcodeScreenContent(
 	modifier: Modifier,
 	uiState: ScanBarcodeUiState,
 	onBarcodeDetected: (DetectedBarcode) -> Unit,
-                            ) {
+	onExit: () -> Unit,
+	) {
 	val context = LocalContext.current
 	val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -90,7 +93,7 @@ fun ScanBarcodeScreenContent(
 				}
 			},
 		           )
-		PreviewOverlay()
+		PreviewOverlay(onExit = onExit)
 		uiState.detectedBarcode?.let {
 			BarcodeOverlay(modifier = Modifier, rect = it.boundingBox)
 		}
