@@ -45,6 +45,10 @@ fun ProductNavHost(
 					navHostController.navigate(ProductDestination.ProductDetails(it)) {
 						popUpTo(ProductDestination.ProductCodeInput)
 					}
+				},
+				onExit = {
+					Timber.d("CodeScanning onExit(), navigating back")
+					navHostController.popBackStack()
 				}
 						  )
 		}
