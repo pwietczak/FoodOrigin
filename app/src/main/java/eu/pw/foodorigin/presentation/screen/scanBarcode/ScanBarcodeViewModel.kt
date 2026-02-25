@@ -34,6 +34,7 @@ class ScanBarcodeViewModel: ViewModel() {
 			Timber.d("Detected Barcode: $detectedBarcode")
 			_uiState.update { it.copy(detectedBarcode = detectedBarcode) }
 			viewModelScope.launch {
+				_events.trySend(ScanBarcodeEvent.Vibrate)
 				delay(AFTER_DETECTION_DELAY)
 				_events.trySend(ScanBarcodeEvent.BarcodeScanned(detectedBarcode.code))
 			}
