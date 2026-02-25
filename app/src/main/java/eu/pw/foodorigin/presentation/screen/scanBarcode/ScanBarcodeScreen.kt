@@ -1,7 +1,5 @@
 package eu.pw.foodorigin.presentation.screen.scanBarcode
 
-import android.os.VibrationEffect
-import android.os.Vibrator
 import androidx.camera.core.ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.camera.view.PreviewView
@@ -16,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.pw.foodorigin.presentation.screen.scanBarcode.components.BarcodeOverlay
@@ -34,17 +31,12 @@ fun ScanBarcodeScreen(
 	onExit: () -> Unit,
                      ) {
 	val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-	val context = LocalContext.current
-	val vibrator = getSystemService(context, Vibrator::class.java)
+
 	LaunchedEffect(Unit) {
 		viewModel.events.collect {
 			when (it) {
 				is ScanBarcodeEvent.BarcodeScanned -> {
 					onBarcodeScanned(it.code)
-				}
-				is ScanBarcodeEvent.Vibrate ->{
-					val effect = VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
-					vibrator?.vibrate(effect)
 				}
 			}
 		}

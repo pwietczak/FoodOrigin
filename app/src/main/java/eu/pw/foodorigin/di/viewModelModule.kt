@@ -16,5 +16,7 @@ val viewModelModule = module {
             getRelatedBigBrand = get()
         )
     }
-    viewModel { ScanBarcodeViewModel() }
+    viewModel { ScanBarcodeViewModel(
+        vibrationService = get()
+                                    ) }
 }

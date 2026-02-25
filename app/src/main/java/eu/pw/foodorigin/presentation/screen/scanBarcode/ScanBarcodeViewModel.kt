@@ -1,7 +1,9 @@
 package eu.pw.foodorigin.presentation.screen.scanBarcode
 
+import android.os.VibrationEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import eu.pw.foodorigin.domain.service.VibrationService
 import eu.pw.foodorigin.presentation.screen.scanBarcode.model.DetectedBarcode
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -12,10 +14,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ScanBarcodeViewModel: ViewModel() {
+class ScanBarcodeViewModel(
+	private val vibrationService: VibrationService
+						  ): ViewModel() {
 
 	companion object{
 		private const val AFTER_DETECTION_DELAY = 200L
+		private val effect = VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
 	}
 
 	private val _uiState = MutableStateFlow(ScanBarcodeUiState())
@@ -34,7 +39,7 @@ class ScanBarcodeViewModel: ViewModel() {
 			Timber.d("Detected Barcode: $detectedBarcode")
 			_uiState.update { it.copy(detectedBarcode = detectedBarcode) }
 			viewModelScope.launch {
-				_events.trySend(ScanBarcodeEvent.Vibrate)
+				vibrationService.vibrate(effect)
 				delay(AFTER_DETECTION_DELAY)
 				_events.trySend(ScanBarcodeEvent.BarcodeScanned(detectedBarcode.code))
 			}
