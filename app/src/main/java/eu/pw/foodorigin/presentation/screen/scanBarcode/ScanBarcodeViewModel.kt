@@ -24,8 +24,13 @@ class ScanBarcodeViewModel: ViewModel() {
 	private val _events = Channel<ScanBarcodeEvent>()
 	val events = _events.receiveAsFlow()
 
+	private var isProcessing = false
+
 	fun onCodeDetected(detectedBarcode: DetectedBarcode) {
+		if (isProcessing) return
+		
 		if (isBarcodeValid(detectedBarcode)) {
+			isProcessing = true
 			Timber.d("Detected Barcode: $detectedBarcode")
 			_uiState.update { it.copy(detectedBarcode = detectedBarcode) }
 			viewModelScope.launch {
@@ -39,4 +44,3 @@ class ScanBarcodeViewModel: ViewModel() {
 		return barcode.code.isNotBlank()
 	}
 }
-

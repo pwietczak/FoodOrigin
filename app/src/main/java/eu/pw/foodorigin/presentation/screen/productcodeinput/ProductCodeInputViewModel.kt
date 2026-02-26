@@ -30,8 +30,13 @@ class ProductCodeInputViewModel : ViewModel() {
 		viewModelScope.launch {
 			_uiState.update { it.copy(isLoading = true) }
 			_eventChannel.send(ProductCodeUiEvent.NavigateToDetails(currentBarcode))
-			_uiState.update { it.copy(isLoading = false) }
+			_uiState.value = ProductCodeInputUiState()
 		}
+	}
+
+	fun onBackFromCodeScanning(code: String) {
+		onBarcodeChange(code)
+		onSearchClicked()
 	}
 
 	private fun validate(barcode: String): Boolean{
