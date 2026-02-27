@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -138,9 +139,13 @@ private fun ProductCodeInputScreenContent(
 			                 )
 		}
 		Button(
-			modifier = Modifier.fillMaxWidth(0.5f),
+			modifier = Modifier.fillMaxWidth(0.75f),
 			onClick = onSearchClicked,
 			shape = RoundedCornerShape(16.dp),
+			colors = ButtonDefaults.buttonColors().copy(
+				containerColor = MaterialTheme.colorScheme.primaryContainer,
+				contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+			                     )
 		      ) {
 			Text(
 				text = stringResource(R.string.product_code_input_screen_button_search_text),
