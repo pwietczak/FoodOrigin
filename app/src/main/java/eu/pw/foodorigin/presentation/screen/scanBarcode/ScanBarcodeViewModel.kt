@@ -2,6 +2,7 @@ package eu.pw.foodorigin.presentation.screen.scanBarcode
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import eu.pw.foodorigin.domain.service.HapticFeedbackService
 import eu.pw.foodorigin.presentation.screen.scanBarcode.model.DetectedBarcode
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -12,7 +13,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ScanBarcodeViewModel: ViewModel() {
+class ScanBarcodeViewModel(
+	private val hapticFeedbackService: HapticFeedbackService
+						  ): ViewModel() {
 
 	companion object{
 		private const val AFTER_DETECTION_DELAY = 200L
@@ -34,6 +37,7 @@ class ScanBarcodeViewModel: ViewModel() {
 			Timber.d("Detected Barcode: $detectedBarcode")
 			_uiState.update { it.copy(detectedBarcode = detectedBarcode) }
 			viewModelScope.launch {
+				hapticFeedbackService.vibrate()
 				delay(AFTER_DETECTION_DELAY)
 				_events.trySend(ScanBarcodeEvent.BarcodeScanned(detectedBarcode.code))
 			}
