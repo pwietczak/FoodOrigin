@@ -11,8 +11,11 @@ object RegionOfInterestConfig {
 	const val HEIGHT_FRACTION = 0.3f
 
 	fun getRegionOfInterestRect(screenWidth: Float, screenHeight: Float): Rect {
-		val roiWidth = screenWidth * WIDTH_FRACTION
-		val roiHeight = screenHeight * HEIGHT_FRACTION
+		val shortSide = minOf(screenWidth, screenHeight)
+		val longSide = maxOf(screenWidth, screenHeight)
+
+		val roiWidth = shortSide * WIDTH_FRACTION
+		val roiHeight = longSide * HEIGHT_FRACTION
 		val left = (screenWidth - roiWidth) / 2f
 		val top = (screenHeight - roiHeight) / 2f
 
