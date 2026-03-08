@@ -21,6 +21,7 @@ fun ProductDetailItem(
 		LabeledItem(
 			modifier = modifier,
 			label = label,
+			labelTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
 			backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
 			onClick = null,
 		           ) {

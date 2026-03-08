@@ -27,6 +27,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -105,15 +107,20 @@ fun SuccessScreen(
 				title = {
 					Text(
 						text = product.productName.orEmpty(),
-						style = MaterialTheme.typography.bodyLarge,
+						style = MaterialTheme.typography.bodyLarge.copy(
+							fontWeight = FontWeight.Medium,
+																	   ),
 						maxLines = 2,
 						overflow = TextOverflow.Ellipsis,
+
 					    )
 				},
 				windowInsets = WindowInsets(0, 0, 0, 0),
 				colors = TopAppBarDefaults.topAppBarColors(
 					containerColor = MaterialTheme.colorScheme.primaryContainer,
 					titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+					actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+					navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
 				                                          ),
 			                      )
 		},

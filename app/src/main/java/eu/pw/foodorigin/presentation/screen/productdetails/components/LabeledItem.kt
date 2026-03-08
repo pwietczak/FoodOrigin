@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 fun LabeledItem(
 	modifier: Modifier,
 	label: String,
+	labelTextColor: Color,
 	backgroundColor: Color,
 	onClick: (() -> Unit)?,
 	content: @Composable RowScope.() -> Unit,
@@ -34,7 +35,7 @@ fun LabeledItem(
 		Text(
 			text = label,
 			style = MaterialTheme.typography.labelLarge,
-			color = MaterialTheme.colorScheme.outline,
+			color = labelTextColor,
 			modifier = Modifier.padding(horizontal = 16.dp)
 		    )
 		Spacer(modifier = Modifier.height(2.dp))

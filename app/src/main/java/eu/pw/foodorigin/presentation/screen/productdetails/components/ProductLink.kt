@@ -34,6 +34,7 @@ fun ProductLink(
 			modifier = modifier,
 			label = stringResource(R.string.product_details_link_label),
 			backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+			labelTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
 			onClick = {
 				try {
 					uriHandler.openUri(urlToOpen)
