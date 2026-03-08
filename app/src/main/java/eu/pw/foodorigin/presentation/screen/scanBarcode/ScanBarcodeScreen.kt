@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.pw.foodorigin.presentation.screen.scanBarcode.components.BarcodeOverlay
 import eu.pw.foodorigin.presentation.screen.scanBarcode.components.PreviewOverlay
+import eu.pw.foodorigin.presentation.screen.scanBarcode.model.BarcodeBoundingBox
 import eu.pw.foodorigin.presentation.screen.scanBarcode.model.DetectedBarcode
 import eu.pw.foodorigin.presentation.screen.scanBarcode.utils.RegionOfInterestConfig.isCenterInsideROI
 import eu.pw.foodorigin.presentation.screen.scanBarcode.utils.getBarcodeScanner
@@ -56,7 +57,7 @@ fun ScanBarcodeScreenContent(
 	uiState: ScanBarcodeUiState,
 	onBarcodeDetected: (DetectedBarcode) -> Unit,
 	onExit: () -> Unit,
-	) {
+                            ) {
 	val context = LocalContext.current
 	val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -85,8 +86,20 @@ fun ScanBarcodeScreenContent(
 							val boundingBox = barcode?.boundingBox
 							val value = barcode?.rawValue
 							if (value != null && boundingBox != null) {
-								if (boundingBox.isCenterInsideROI(width.toFloat(), height.toFloat()))
-									onBarcodeDetected(DetectedBarcode(value, boundingBox))
+								if (boundingBox.isCenterInsideROI(
+										width.toFloat(), height.toFloat(),
+								                                 )
+								) onBarcodeDetected(
+									DetectedBarcode(
+										code = value,
+										boundingBox = BarcodeBoundingBox(
+											left = boundingBox.left.toFloat(),
+											top = boundingBox.top.toFloat(),
+											right = boundingBox.right.toFloat(),
+											bottom = boundingBox.bottom.toFloat(),
+										                                ),
+									               ),
+								                   )
 							}
 						},
 					                                         )
@@ -95,7 +108,7 @@ fun ScanBarcodeScreenContent(
 		           )
 		PreviewOverlay(onExit = onExit)
 		uiState.detectedBarcode?.let {
-			BarcodeOverlay(modifier = Modifier, rect = it.boundingBox)
+			BarcodeOverlay(modifier = Modifier, barcode = it)
 		}
 	}
 

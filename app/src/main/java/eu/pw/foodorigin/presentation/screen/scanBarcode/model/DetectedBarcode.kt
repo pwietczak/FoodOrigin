@@ -1,8 +1,13 @@
 package eu.pw.foodorigin.presentation.screen.scanBarcode.model
 
-import android.graphics.Rect
+data class BarcodeBoundingBox(
+	val left: Float,
+	val top: Float,
+	val right: Float,
+	val bottom: Float
+)
 
 data class DetectedBarcode(
 	val code: String,
-	val boundingBox: Rect
-                          )
+	val boundingBox: BarcodeBoundingBox
+)
