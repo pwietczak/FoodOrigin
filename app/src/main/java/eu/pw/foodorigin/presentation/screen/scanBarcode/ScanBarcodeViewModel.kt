@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import eu.pw.foodorigin.domain.service.HapticFeedbackService
 import eu.pw.foodorigin.presentation.screen.scanBarcode.model.DetectedBarcode
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,7 @@ class ScanBarcodeViewModel(
 						  ): ViewModel() {
 
 	companion object{
-		private const val AFTER_DETECTION_DELAY = 200L
+		const val AFTER_DETECTION_DELAY = 200L
 	}
 
 	private val _uiState = MutableStateFlow(ScanBarcodeUiState())
