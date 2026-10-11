@@ -20,6 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 
 private const val KEY_SCANNED_BARCODE = "scanned_barcode"
+private const val KEY_FOCUS_BARCODE_INPUT = "focus_barcode_input"
 private const val TWEEN_DURATION = 200
 private fun inTransition() = fadeIn(animationSpec = tween(durationMillis = TWEEN_DURATION, delayMillis = TWEEN_DURATION))
 private fun outTransition() = fadeOut(animationSpec = tween(durationMillis = TWEEN_DURATION))
@@ -43,6 +44,9 @@ fun ProductNavHost(
 			val scannedBarcode by backStackEntry.savedStateHandle
 				.getStateFlow<String?>(KEY_SCANNED_BARCODE, null)
 				.collectAsStateWithLifecycle()
+			val shouldFocusBarcodeInput by backStackEntry.savedStateHandle
+				.getStateFlow(KEY_FOCUS_BARCODE_INPUT, false)
+				.collectAsStateWithLifecycle()
 
 			LaunchedEffect(scannedBarcode) {
 				scannedBarcode?.let {
@@ -55,6 +59,10 @@ fun ProductNavHost(
 			ProductCodeInputScreen(
 				modifier = Modifier.fillMaxSize(),
 				viewModel = viewModel,
+				shouldFocusBarcodeInput = shouldFocusBarcodeInput,
+				onFocusRequestHandled = {
+					backStackEntry.savedStateHandle[KEY_FOCUS_BARCODE_INPUT] = false
+				},
 				navigateToScanCode = {
 					Timber.d("ProductDestination.ProductCodeInput navigateToScanCode(), navigating to CodeScanning")
 					navHostController.navigate(ProductDestination.CodeScanning)
@@ -69,6 +77,11 @@ fun ProductNavHost(
 			ScanBarcodeScreen(
 				modifier = Modifier.fillMaxSize(),
 				viewModel = koinViewModel(),
+				onPermissionExit = {
+					navHostController.previousBackStackEntry?.savedStateHandle
+						?.set(KEY_FOCUS_BARCODE_INPUT, true)
+					navHostController.popBackStack()
+				},
 				onBarcodeScanned = {
 					Timber.d("ProductDestination.CodeScanning, code detected: $it, navigating back to ProductCodeInputScreen")
 					navHostController.previousBackStackEntry?.savedStateHandle?.set(KEY_SCANNED_BARCODE, it)

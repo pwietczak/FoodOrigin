@@ -41,6 +41,11 @@ The permission is managed by `ScanBarcodeScreen` using AndroidX's `ActivityResul
    - If permission was granted in settings, the scanner content is displayed.
    - If permission is still denied, the permission explanation and settings option remain visible.
 
+7. **Exit without granting permission**
+   - Selecting **Exit** on the permission screen returns to the product-code input screen.
+   - The barcode field receives focus and the software keyboard opens so the user can enter a code manually.
+   - This focus behavior applies only to exiting the permission screen; returning with a scanned barcode follows the separate scan-result flow.
+
 ## Permission-state selection
 
 `cameraPermissionScreenState` maps the request history and Android rationale result to the screen shown:

@@ -46,6 +46,7 @@ fun ScanBarcodeScreen(
 	modifier: Modifier = Modifier,
 	viewModel: ScanBarcodeViewModel,
 	onBarcodeScanned: (String) -> Unit,
+	onPermissionExit: () -> Unit,
 	onExit: () -> Unit,
                      ) {
 	val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -118,7 +119,7 @@ fun ScanBarcodeScreen(
 					},
 				)
 			},
-			onExit = onExit,
+			onExit = onPermissionExit,
 		)
 	}
 }

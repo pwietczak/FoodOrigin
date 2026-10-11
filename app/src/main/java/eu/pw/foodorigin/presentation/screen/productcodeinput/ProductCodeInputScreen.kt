@@ -23,8 +23,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,6 +45,8 @@ import eu.pw.foodorigin.ui.theme.FoodOriginTheme
 fun ProductCodeInputScreen(
 	modifier: Modifier,
 	viewModel: ProductCodeInputViewModel,
+	shouldFocusBarcodeInput: Boolean,
+	onFocusRequestHandled: () -> Unit,
 	navigateToScanCode: () -> Unit,
 	onSearch: (String) -> Unit,
                           ) {
@@ -58,6 +64,8 @@ fun ProductCodeInputScreen(
 	ProductCodeInputScreenContent(
 		modifier = modifier,
 		uiState = uiState,
+		shouldFocusBarcodeInput = shouldFocusBarcodeInput,
+		onFocusRequestHandled = onFocusRequestHandled,
 		onBarcodeChange = viewModel::onBarcodeChange,
 		onSearchClicked = viewModel::onSearchClicked,
 		navigateToScanCode = navigateToScanCode,
@@ -68,10 +76,24 @@ fun ProductCodeInputScreen(
 private fun ProductCodeInputScreenContent(
 	modifier: Modifier,
 	uiState: ProductCodeInputUiState,
+	shouldFocusBarcodeInput: Boolean,
+	onFocusRequestHandled: () -> Unit,
 	onBarcodeChange: (String) -> Unit,
 	onSearchClicked: () -> Unit,
 	navigateToScanCode: () -> Unit,
                                          ) {
+	val barcodeInputFocusRequester = remember { FocusRequester() }
+	val keyboardController = LocalSoftwareKeyboardController.current
+
+	LaunchedEffect(shouldFocusBarcodeInput) {
+		if (shouldFocusBarcodeInput) {
+			if (barcodeInputFocusRequester.requestFocus()) {
+				keyboardController?.show()
+			}
+			onFocusRequestHandled()
+		}
+	}
+
 	if (uiState.isLoading) {
 		Box(
 			modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center,
@@ -103,6 +125,7 @@ private fun ProductCodeInputScreenContent(
 				onBarcodeChange = onBarcodeChange,
 				navigateToScanCode = navigateToScanCode,
 				onSearchClicked = onSearchClicked,
+				focusRequester = barcodeInputFocusRequester,
 			                )
 		}
 		Button(
@@ -129,9 +152,12 @@ private fun BarcodeTextField(
 	onBarcodeChange: (String) -> Unit,
 	navigateToScanCode: () -> Unit,
 	onSearchClicked: () -> Unit,
+	focusRequester: FocusRequester,
                             ) {
 	OutlinedTextField(
-		modifier = Modifier.fillMaxWidth(),
+		modifier = Modifier
+			.fillMaxWidth()
+			.focusRequester(focusRequester),
 		value = uiState.barcode,
 		onValueChange = onBarcodeChange,
 		label = {
@@ -178,6 +204,8 @@ fun ProductCodeInputScreenPreview(
 		ProductCodeInputScreenContent(
 			modifier = Modifier.background(MaterialTheme.colorScheme.background),
 			uiState = uiState,
+			shouldFocusBarcodeInput = false,
+			onFocusRequestHandled = {},
 			onBarcodeChange = {},
 			onSearchClicked = {},
 			navigateToScanCode = {},
