@@ -87,9 +87,7 @@ private fun ProductCodeInputScreenContent(
 		verticalArrangement = Arrangement.Center,
 	           ) {
 		Column(
-			modifier = Modifier
-				.weight(1f)
-				.padding(16.dp),
+			modifier = Modifier.weight(1f),
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.Center,
 		      ) {
@@ -100,41 +98,12 @@ private fun ProductCodeInputScreenContent(
 				textAlign = TextAlign.Center,
 			    )
 			Spacer(modifier = Modifier.height(16.dp))
-			OutlinedTextField(
-				modifier = Modifier.fillMaxWidth(),
-				value = uiState.barcode,
-				onValueChange = onBarcodeChange,
-				label = {
-					Text(
-						text = stringResource(R.string.product_code_input_screen_text_field_label),
-					    )
-				},
-				trailingIcon = {
-					IconButton(onClick = { navigateToScanCode() }) {
-						Icon(
-							painter = painterResource(R.drawable.barcode_scanner_24dp),
-							contentDescription = stringResource(
-								R.string.product_code_input_screen_button_scan_code_content_desc,
-							                                   ),
-						    )
-					}
-				},
-				supportingText = {
-					uiState.errorMessageResId?.let {
-						Text(
-							text = stringResource(it),
-							color = MaterialTheme.colorScheme.error,
-						    )
-					}
-				},
-				singleLine = true,
-				keyboardOptions = KeyboardOptions.Default.copy(
-					keyboardType = KeyboardType.Number,
-				                                              ),
-				keyboardActions = KeyboardActions(
-					onDone = { onSearchClicked() },
-				                                 ),
-			                 )
+			BarcodeTextField(
+				uiState = uiState,
+				onBarcodeChange = onBarcodeChange,
+				navigateToScanCode = navigateToScanCode,
+				onSearchClicked = onSearchClicked,
+			                )
 		}
 		Button(
 			modifier = Modifier.fillMaxWidth(0.75f),
@@ -143,7 +112,7 @@ private fun ProductCodeInputScreenContent(
 			colors = ButtonDefaults.buttonColors().copy(
 				containerColor = MaterialTheme.colorScheme.primaryContainer,
 				contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-			                     )
+			                                           ),
 		      ) {
 			Text(
 				text = stringResource(R.string.product_code_input_screen_button_search_text),
@@ -152,6 +121,50 @@ private fun ProductCodeInputScreenContent(
 			    )
 		}
 	}
+}
+
+@Composable
+private fun BarcodeTextField(
+	uiState: ProductCodeInputUiState,
+	onBarcodeChange: (String) -> Unit,
+	navigateToScanCode: () -> Unit,
+	onSearchClicked: () -> Unit,
+                            ) {
+	OutlinedTextField(
+		modifier = Modifier.fillMaxWidth(),
+		value = uiState.barcode,
+		onValueChange = onBarcodeChange,
+		label = {
+			Text(
+				text = stringResource(R.string.product_code_input_screen_text_field_label),
+			    )
+		},
+		trailingIcon = {
+			IconButton(onClick = { navigateToScanCode() }) {
+				Icon(
+					painter = painterResource(R.drawable.barcode_scanner_24dp),
+					contentDescription = stringResource(
+						R.string.product_code_input_screen_button_scan_code_content_desc,
+					                                   ),
+				    )
+			}
+		},
+		supportingText = {
+			uiState.errorMessageResId?.let {
+				Text(
+					text = stringResource(it),
+					color = MaterialTheme.colorScheme.error,
+				    )
+			}
+		},
+		singleLine = true,
+		keyboardOptions = KeyboardOptions.Default.copy(
+			keyboardType = KeyboardType.Number,
+		                                              ),
+		keyboardActions = KeyboardActions(
+			onDone = { onSearchClicked() },
+		                                 ),
+	                 )
 }
 
 @PreviewLightDark
