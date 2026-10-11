@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import eu.pw.foodorigin.presentation.navigation.AppNavHost
+import eu.pw.foodorigin.presentation.navigation.ProductNavHost
 import eu.pw.foodorigin.ui.theme.FoodOriginTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
 			FoodOriginTheme {
 				Scaffold { innerPadding ->
 					val navHostController = rememberNavController()
-					AppNavHost(
+					ProductNavHost(
 						modifier = Modifier.padding(innerPadding),
 						navHostController = navHostController,
 					          )

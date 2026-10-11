@@ -33,7 +33,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import eu.pw.foodorigin.R
 import eu.pw.foodorigin.presentation.previewDataProvider.ProductCodeInputUiStatePreviewDataProvider
 import eu.pw.foodorigin.ui.theme.FoodOriginTheme
@@ -65,7 +64,6 @@ fun ProductCodeInputScreen(
 	                             )
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun ProductCodeInputScreenContent(
 	modifier: Modifier,
